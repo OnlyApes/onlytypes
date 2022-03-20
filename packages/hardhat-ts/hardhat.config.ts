@@ -32,6 +32,14 @@ import { create } from 'ipfs-http-client';
 import { config as envConfig } from 'dotenv';
 envConfig({ path: '../vite-app-ts/.env' });
 
+import * as glob from 'glob';
+
+if (!process.env.SKIP_LOAD) {
+  glob.sync('./tasks/**/*.ts').forEach(function (file) {
+    require(path.resolve(file));
+  });
+}
+
 /**
  * Set your target network!!!
  */
@@ -124,6 +132,15 @@ const config: HardhatUserConfig = {
   },
   solidity: {
     compilers: [
+      {
+        version: '0.8.10',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
       {
         version: '0.8.6',
         settings: {
