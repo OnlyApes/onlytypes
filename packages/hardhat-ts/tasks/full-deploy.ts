@@ -1,6 +1,6 @@
 import '@nomiclabs/hardhat-ethers';
 import { hexlify, keccak256, RLP } from 'ethers/lib/utils';
-import fs from 'fs';
+import * as fs from 'fs';
 import { task } from 'hardhat/config';
 import {
   LensHub__factory,

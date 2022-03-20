@@ -1,7 +1,7 @@
 import '@nomiclabs/hardhat-ethers';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { Contract, ContractTransaction } from 'ethers';
-import fs from 'fs';
+import * as fs from 'fs';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { runtimeHRE } from '../full-deploy-verify';
 
