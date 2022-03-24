@@ -13,6 +13,7 @@ import React, { useState, FC, useContext, ReactNode } from 'react';
 
 import { useAppContracts } from '~~/config/contractContext';
 import { SetPurposeEvent } from '~~/generated/contract-types/YourContract';
+import { CreateProfileDataStruct } from '~~/generated/contract-types/ILensHub';
 
 export interface IExampleUIProps {
   mainnetProvider: StaticJsonRpcProvider | undefined;
@@ -25,6 +26,7 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
   const ethersContext = useEthersContext();
 
   const yourContract = useAppContracts('YourContract', ethersContext.chainId);
+  const lensHub = useAppContracts('LensHub', ethersContext.chainId);
   const [purpose] = useContractReader(yourContract, yourContract?.purpose, [], yourContract?.filters.SetPurpose());
 
   const [setPurposeEvents] = useEventListener<SetPurposeEvent>(yourContract, yourContract?.filters.SetPurpose(), 1);
@@ -38,6 +40,19 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
 
   const { mainnetProvider, yourCurrentBalance, price } = props;
 
+  const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+  const inputStruct: CreateProfileDataStruct = {
+    to: address,
+    handle: 'tomo',
+    imageURI:
+      'https://ipfs.fleek.co/ipfs/tomotomotomo',
+    followModule: ZERO_ADDRESS,
+    followModuleData: [],
+    followNFTURI:
+      'https://ipfs.fleek.co/ipfs/ghostplantghostplantghostplantghostplantghostplantghostplan',
+  };
+
   return (
     <div>
       {/*
@@ -45,6 +60,53 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
       */}
       <div style={{ border: '1px solid #cccccc', padding: 16, width: 400, margin: 'auto', marginTop: 64 }}>
         <h2>Example UI:</h2>
+        <h3>Create Lens profile</h3>
+        <div style={{ margin: 8 }}>
+          <span>We'll need the governance signer because Lens uses a profile creator whitelist.</span>
+          <p>Do this step manually via hardhat task.</p>
+          <Button
+            style={{ marginTop: 8 }}
+            onClick={async (): Promise<void> => {
+              const result = tx?.(lensHub?.whitelistProfileCreator(address, true), (update: any) => {
+                console.log('📡 Transaction Update:', update);
+                if (update && (update.status === 'confirmed' || update.status === 1)) {
+                  console.log(' 🍾 Transaction ' + update.hash + ' finished!');
+                }
+              });
+              console.log('awaiting metamask/web3 confirm result...', result);
+              console.log(await result);
+            }}>
+            Whitelist Address to Profile!
+          </Button>
+        </div>
+        <div style={{ margin: 8 }}>
+          <p>to: {address}</p>
+          <Button
+            style={{ marginTop: 8 }}
+            onClick={async (): Promise<void> => {
+              /* look how you call setPurpose on your contract: */
+              /* notice how you pass a call back for tx updates too */
+              const result = tx?.(lensHub?.createProfile(inputStruct), (update: any) => {
+                console.log('📡 Transaction Update:', update);
+                if (update && (update.status === 'confirmed' || update.status === 1)) {
+                  console.log(' 🍾 Transaction ' + update.hash + ' finished!');
+                  console.log(
+                    ' ⛽️ ' +
+                      update.gasUsed +
+                      '/' +
+                      (update.gasLimit || update.gas) +
+                      ' @ ' +
+                      parseFloat(update.gasPrice) / 1000000000 +
+                      ' gwei'
+                  );
+                }
+              });
+              console.log('awaiting metamask/web3 confirm result...', result);
+              console.log(await result);
+            }}>
+            Create Profile!
+          </Button>
+        </div>
         <h4>purpose: {purpose}</h4>
         <Divider />
         <div style={{ margin: 8 }}>
