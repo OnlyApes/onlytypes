@@ -42,6 +42,12 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
 
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
+  const [profileCount] = useContractReader(lensHub, lensHub?.balanceOf, [address], /* funcEventFilter Optional if only want contract to update on event */);
+  const [profileTokenId] = useContractReader(lensHub, lensHub?.tokenOfOwnerByIndex, [address, 0], /* funcEventFilter Optional if only want contract to update on event */);
+  const [profileData] = useContractReader(lensHub, lensHub?.getProfile, [profileTokenId]);
+  // getPubCount(profileTokenId)
+  // getFollowNFT
+  // getHandle
   const inputStruct: CreateProfileDataStruct = {
     to: address,
     handle: 'tomo',
@@ -80,7 +86,9 @@ export const ExampleUI: FC<IExampleUIProps> = (props) => {
           </Button>
         </div>
         <div style={{ margin: 8 }}>
-          <p>to: {address}</p>
+          <p>to: {address} ({profileCount?.toNumber()} profiles existing)</p>
+          <p>tokenId {profileTokenId?.toNumber()}</p>
+          <p>{JSON.stringify(profileData)}</p>
           <Button
             style={{ marginTop: 8 }}
             onClick={async (): Promise<void> => {
