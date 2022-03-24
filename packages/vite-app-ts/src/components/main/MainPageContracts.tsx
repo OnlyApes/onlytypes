@@ -20,6 +20,7 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
   const ethersContext = useEthersContext();
   const mainnetDai = useAppContracts('DAI', NETWORKS.mainnet.chainId);
   const yourContract = useAppContracts('YourContract', ethersContext.chainId);
+  const lensHub = useAppContracts('LensHub', ethersContext.chainId);
 
   if (ethersContext.account == null) {
     return <></>;
@@ -34,8 +35,8 @@ export const MainPageContracts: FC<IMainPageContractsProps> = (props) => {
           and give you a form to interact with it locally
         ********** */}
         <GenericContract
-          contractName="YourContract"
-          contract={yourContract}
+          contractName="LensHub"
+          contract={lensHub}
           mainnetAdaptor={props.scaffoldAppProviders.mainnetAdaptor}
           blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
         />

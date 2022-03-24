@@ -29,6 +29,7 @@ export const contractConnectorConfig = () => {
         hardhatContracts.YourContract__factory,
         hardhatContractsJson
       ),
+      LensHub: createConnectorForHardhatContract('LensHub', hardhatContracts.LensHub__factory, hardhatContractsJson),
 
       // 🙋🏽‍♂️ Add your external contracts here, make sure to define the address in `externalContractsConfig.ts`
       DAI: createConnectorForExternalContract('DAI', externalContracts.DAI__factory, externalContractsAddressMap),
