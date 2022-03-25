@@ -17,6 +17,8 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     log: true,
   });
 
+  const MockNFT = await ethers.getContract("MockNFT", deployer);
+
   /*
     // Getting a previously deployed contract
     const YourContract = await ethers.getContract("YourContract", deployer);
