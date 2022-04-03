@@ -5,7 +5,7 @@ import { getAddrs, initEnv, waitForTx } from './helpers/utils';
 task('follow', 'follows a profile').setAction(async ({}, hre) => {
   const [, , user, user2] = await initEnv(hre);
   const addrs = getAddrs();
-  const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], user2);
+  const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], user);
 
   await waitForTx(lensHub.follow([1], [[]]));
 
@@ -17,6 +17,6 @@ task('follow', 'follows a profile').setAction(async ({}, hre) => {
 
   console.log(`Follow NFT total supply (should be 1): ${totalSupply}`);
   console.log(
-    `Follow NFT owner of ID 1: ${ownerOf}, user address (should be different): ${user2.address}`
+    `Follow NFT owner of ID 1: ${ownerOf}, user address (should be different): ${user.address}`
   );
 });
