@@ -24,5 +24,6 @@ task('respond', 'respond to a poll').setAction(async ({}, hre) => {
   };
 
   const tx = await waitForTx(lensHub.connect(user).comment(inputStruct));
-  console.log(await lensHub.getPub(1,3));
+
+  console.log(await lensHub.getPub(1,6));
 });
