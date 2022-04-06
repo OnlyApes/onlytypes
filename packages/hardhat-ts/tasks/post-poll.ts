@@ -22,5 +22,5 @@ task('post-poll', 'publishes a custom post(poll)').setAction(async ({}, hre) => 
   };
 
   await waitForTx(lensHub.connect(user).post(inputStruct));
-  console.log(await lensHub.getPub(1, 2));
+  console.log(await lensHub.getPub(1, 1));
 });

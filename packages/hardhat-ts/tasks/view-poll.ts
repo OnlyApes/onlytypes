@@ -8,5 +8,5 @@ task('view-poll', 'view poll').setAction(async ({}, hre) => {
   const addrs = getAddrs();
   const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governance);
 
-  console.log(await lensHub.getPub(1, 2));
+  console.log(await lensHub.getPub(1, 1));
 });
